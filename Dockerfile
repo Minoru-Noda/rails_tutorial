@@ -9,7 +9,6 @@ WORKDIR /rails
 
 # Set production environment
 ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
@@ -35,12 +34,6 @@ RUN gem install bundler:2.4.22
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
-
-# フローズンモードを解除する
-RUN bundle config set frozen false
-
-# /usr/local/bundle ディレクトリに書き込み権限を付与
-RUN chown -R 1000:1000 /usr/local/bundle
 
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
